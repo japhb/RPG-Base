@@ -1,7 +1,7 @@
 NAME
 ====
 
-RPG::Base - blah blah blah
+RPG::Base - Common base components for RPGs
 
 SYNOPSIS
 ========
@@ -11,7 +11,7 @@ SYNOPSIS
 DESCRIPTION
 ===========
 
-RPG::Base is ...
+RPG::Base is a set of common base concepts and components on which more complex RPG rulesets can be based. It limits itself to those concepts that are near universal across RPGs (though some games use different terminology, RPG::Base simply chooses common terms knowing that game-specific subclasses can be named using that game's particular terminology).
 
 AUTHOR
 ======

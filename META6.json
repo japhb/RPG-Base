@@ -4,7 +4,7 @@
   ],
   "build-depends" : [ ],
   "depends" : [ ],
-  "description" : "blah blah blah",
+  "description" : "Common base components for RPGs",
   "license" : "Artistic-2.0",
   "name" : "RPG::Base",
   "perl" : "6.c",
