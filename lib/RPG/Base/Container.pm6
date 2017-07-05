@@ -2,6 +2,7 @@ use RPG::Base::Thing;
 use RPG::Base::ThingContainer;
 
 
+#| An actual container, such as a backpack or pouch
 class RPG::Base::Container is RPG::Base::Thing
  does RPG::Base::ThingContainer {
     method gist() {
