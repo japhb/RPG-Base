@@ -5,6 +5,7 @@ use RPG::Base::Thing;
 use RPG::Base::ThingContainer;
 use RPG::Base::Container;
 use RPG::Base::Location;
+use RPG::Base::StatModifier;
 
 
 plan 1;

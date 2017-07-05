@@ -13,6 +13,7 @@
     "RPG::Base::Container" : "lib/RPG/Base/Container.pm6",
     "RPG::Base::Location" : "lib/RPG/Base/Location.pm6",
     "RPG::Base::Named" : "lib/RPG/Base/Named.pm6",
+    "RPG::Base::StatModifier" : "lib/RPG/Base/StatModifier.pm6",
     "RPG::Base::Thing" : "lib/RPG/Base/Thing.pm6",
     "RPG::Base::ThingContainer" : "lib/RPG/Base/ThingContainer.pm6"
   },
