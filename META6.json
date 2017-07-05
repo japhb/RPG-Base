@@ -10,7 +10,8 @@
   "perl" : "6.c",
   "provides" : {
     "RPG::Base" : "lib/RPG/Base.pm6",
-    "RPG::Base::Named" : "lib/RPG/Base/Named.pm6"
+    "RPG::Base::Named" : "lib/RPG/Base/Named.pm6",
+    "RPG::Base::Thing" : "lib/RPG/Base/Thing.pm6"
   },
   "resources" : [ ],
   "source-url" : "",
