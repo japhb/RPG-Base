@@ -10,7 +10,7 @@ class X::RPG::Base::Location::ExitDoesNotExist is Exception {
     has Str                 $.direction;
     has RPG::Base::Location $.location;
 
-    method message {
+    method message() {
         "$.location.^name() '$.location' does not have an exit going '$.direction'"
     }
 }
@@ -19,7 +19,7 @@ class X::RPG::Base::Location::ExitAlreadyExists is Exception {
     has Str                 $.direction;
     has RPG::Base::Location $.location;
 
-    method message {
+    method message() {
         "$.location.^name() '$.location' already has an exit going '$.direction'"
     }
 }

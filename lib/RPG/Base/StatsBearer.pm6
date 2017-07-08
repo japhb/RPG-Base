@@ -9,7 +9,7 @@ class X::RPG::Base::StatsBearer::StatUnknown is Exception {
     has                        $.stat;
     has RPG::Base::StatsBearer $.bearer;
 
-    method message {
+    method message() {
         "Stat '$.stat' is unknown to $.bearer.^name() '$.bearer'"
     }
 }
@@ -18,7 +18,7 @@ class X::RPG::Base::StatsBearer::StatUnset is Exception {
     has                        $.stat;
     has RPG::Base::StatsBearer $.bearer;
 
-    method message {
+    method message() {
         "Stat '$.stat' is not set for $.bearer.^name() '$.bearer'"
     }
 }
@@ -27,7 +27,7 @@ class X::RPG::Base::StatsBearer::StatComputed is Exception {
     has                        $.stat;
     has RPG::Base::StatsBearer $.bearer;
 
-    method message {
+    method message() {
         "Stat '$.stat' is computed for $.bearer.^name() '$.bearer', and cannot be directly set or modified"
     }
 }

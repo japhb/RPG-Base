@@ -9,7 +9,7 @@ class X::RPG::Base::ThingContainer::ThingNotContained is Exception {
     has RPG::Base::Thing          $.thing;
     has RPG::Base::ThingContainer $.container;
 
-    method message {
+    method message() {
         "$.thing.^name() '$.thing' is not in $.container.^name() '$.container'"
     }
 }
@@ -18,7 +18,7 @@ class X::RPG::Base::ThingContainer::ThingAlreadyContained is Exception {
     has RPG::Base::Thing          $.thing;
     has RPG::Base::ThingContainer $.container;
 
-    method message {
+    method message() {
         "$.container.^name() '$.container' already contains $.thing.^name() '$.thing'"
     }
 }
@@ -26,7 +26,7 @@ class X::RPG::Base::ThingContainer::ThingAlreadyContained is Exception {
 class X::RPG::Base::ThingContainer::ThingAlreadyHasContainer is Exception {
     has RPG::Base::Thing $.thing;
 
-    method message {
+    method message() {
         "$.container.^name() '$.thing' is already in another container"
         ~ ", $.thing.container.^name() '$.thing.container()'"
     }
