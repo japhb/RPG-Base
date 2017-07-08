@@ -67,17 +67,17 @@ plan 44;
     is $location.contents.elems, 1, "only one thing in location's contents";
 
     throws-like { $location.add-thing($container) },
-                X::RPG::Base::ThingContainer::ThingAlreadyContained;
+                X::RPG::Base::ThingContainer::AlreadyContained;
 
     throws-like { $l2.add-thing($container) },
-                X::RPG::Base::ThingContainer::ThingAlreadyHasContainer;
+                X::RPG::Base::ThingContainer::AlreadyHasContainer;
 
     # remove-thing
     my $c2 = RPG::Base::Container.new(:name('pouch'));
     throws-like { $location.remove-thing($c2) },
-                X::RPG::Base::ThingContainer::ThingNotContained;
+                X::RPG::Base::ThingContainer::NotContained;
     throws-like { $l2.remove-thing($container) },
-                X::RPG::Base::ThingContainer::ThingNotContained;
+                X::RPG::Base::ThingContainer::NotContained;
 
     $location.add-thing($c2);
     ok $c2 ∈ $location.contents, "second thing is in location's contents";
@@ -94,7 +94,7 @@ plan 44;
                 X::RPG::Base::Location::ExitDoesNotExist;
 
     throws-like { $location.move-thing(:direction('inward'), :thing($c2)) },
-                X::RPG::Base::ThingContainer::ThingNotContained;
+                X::RPG::Base::ThingContainer::NotContained;
 
     $location.move-thing(:direction('inward'), :thing($container));
     is $container.container, $l3, "thing knows its new location";
@@ -107,7 +107,7 @@ plan 44;
                 X::RPG::Base::Location::ExitDoesNotExist;
 
     throws-like { $l3.move-thing('outward' => $c2) },
-                X::RPG::Base::ThingContainer::ThingNotContained;
+                X::RPG::Base::ThingContainer::NotContained;
 
     $l3.move-thing('outward' => $container);
     is $container.container, $location, "thing knows its new location";
