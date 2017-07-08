@@ -5,7 +5,7 @@ role RPG::Base::ThingContainer {...};
 
 
 # Exceptions specific to this role
-class X::RPG::Base::ThingContainer::ThingNotContained is Exception {
+class X::RPG::Base::ThingContainer::NotContained is Exception {
     has RPG::Base::Thing          $.thing;
     has RPG::Base::ThingContainer $.container;
 
@@ -14,7 +14,7 @@ class X::RPG::Base::ThingContainer::ThingNotContained is Exception {
     }
 }
 
-class X::RPG::Base::ThingContainer::ThingAlreadyContained is Exception {
+class X::RPG::Base::ThingContainer::AlreadyContained is Exception {
     has RPG::Base::Thing          $.thing;
     has RPG::Base::ThingContainer $.container;
 
@@ -23,7 +23,7 @@ class X::RPG::Base::ThingContainer::ThingAlreadyContained is Exception {
     }
 }
 
-class X::RPG::Base::ThingContainer::ThingAlreadyHasContainer is Exception {
+class X::RPG::Base::ThingContainer::AlreadyHasContainer is Exception {
     has RPG::Base::Thing $.thing;
 
     method message() {
@@ -40,17 +40,17 @@ role RPG::Base::ThingContainer {
 
     # Invariant checkers
     method !throw-if-thing-in-self($thing) {
-        X::RPG::Base::ThingContainer::ThingAlreadyContained.new(:$thing, :container(self)).throw
+        X::RPG::Base::ThingContainer::AlreadyContained.new(:$thing, :container(self)).throw
             if $thing ∈ @!contents;
     }
 
     method !throw-unless-thing-in-self($thing) {
-        X::RPG::Base::ThingContainer::ThingNotContained.new(:$thing, :container(self)).throw
+        X::RPG::Base::ThingContainer::NotContained.new(:$thing, :container(self)).throw
             unless $thing ∈ @!contents;
     }
 
     method !throw-if-thing-has-container($thing) {
-        X::RPG::Base::ThingContainer::ThingAlreadyHasContainer.new(:$thing).throw
+        X::RPG::Base::ThingContainer::AlreadyHasContainer.new(:$thing).throw
             if $thing.container;
     }
 
