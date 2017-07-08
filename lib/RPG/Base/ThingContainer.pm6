@@ -33,7 +33,9 @@ class X::RPG::Base::ThingContainer::AlreadyHasContainer is Exception {
 }
 
 
-#| A basic container for Things which enforces common sense invariants
+#| A basic container for Things which enforces unique containment
+#  Note: Containment need not be literal; it could indicate that the Things
+#        "contained" are actually attached to or worn by the ThingContainer.
 role RPG::Base::ThingContainer {
     has RPG::Base::Thing @.contents;
 
