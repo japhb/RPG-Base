@@ -11,6 +11,7 @@ use RPG::Base::Creature;
 use RPG::Base::Grouping;
 use RPG::Base::Party;
 use RPG::Base::AreaMap;
+use RPG::Base::Adventure;
 
 
 plan 1;
