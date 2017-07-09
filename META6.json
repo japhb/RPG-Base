@@ -10,6 +10,7 @@
   "perl" : "6.c",
   "provides" : {
     "RPG::Base" : "lib/RPG/Base.pm6",
+    "RPG::Base::AreaMap" : "lib/RPG/Base/AreaMap.pm6",
     "RPG::Base::Container" : "lib/RPG/Base/Container.pm6",
     "RPG::Base::Creature" : "lib/RPG/Base/Creature.pm6",
     "RPG::Base::Grouping" : "lib/RPG/Base/Grouping.pm6",
