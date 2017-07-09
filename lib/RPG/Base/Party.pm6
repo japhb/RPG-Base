@@ -6,4 +6,8 @@ use RPG::Base::Grouping;
 class RPG::Base::Party
  does RPG::Base::Grouping[RPG::Base::Creature] {
 
+    method gist() {
+        "{+@.members} member party"
+        ~ (': ' ~ @.members».name.join(', ') if @.members)
+    }
 }
