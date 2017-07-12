@@ -30,6 +30,9 @@ role RPG::Base::Grouping[::T] {
     has SetHash $.members handles 'Set';
 
 
+    method BUILD(SetHash(Any) :$!members) { }
+
+
     # Invariant checkers
     method !throw-unless-member($member) {
         X::RPG::Base::Grouping::NotMember.new(:$member, :grouping(self)).throw
