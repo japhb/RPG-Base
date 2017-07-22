@@ -43,6 +43,15 @@ DESCRIPTION
 
 The entire point of `RPG::Base` is to be subclassable, extensible, and generic. If it turns out that one of the design choices is making that difficult, **please let me know**.
 
+CONTRIBUTING
+============
+
+Pull requests are very welcome! It will take the implementation of many rulesets based on `RPG::Base` to find all the common code and concepts that should be factored out, and I'm certainly not going to be implementing them all myself. That said, please be aware that if I believe the new code wouldn't work well with one of the other rulesets or will block off a useful direction for extension, I may alter the PR before merging, or ask you to consider a different approach to make sure it fits well into the ecosystem.
+
+Please be *very* careful with copyrights and trademarks. Some of the companies that own game system intellectual property are famously litigious and it's important that any such questions stay well away from `RPG::Base` so that the "blast radius" of an IP disagreement won't include all modules depending on this one.
+
+Stylistically, I generally keep with Larry Wall's classic Perl formatting rules (4 space indents, uncuddled elses, opening brace on same line as the control structure it goes with, and so on). I prefer to use the Unicode forms of operators such as `»` and `∈` rather than the Texas (pure ASCII) forms. Due to quirks of my brain, I will tend to favor aligning similar parts of consecutive lines when I can get it. This tends to manifest most often in variable and class attribute definitions, where I align the type names, attribute names, and default values in columns.
+
 AUTHOR
 ======
 
