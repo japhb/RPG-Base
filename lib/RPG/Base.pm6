@@ -40,6 +40,10 @@ C<RPG::Base> - Common base components for RPGs
                   #  Cloth Backpack (contents: Flint and Steel),
                   #  Ironwood Wand)"
 
+  $clearing.move-thing('south' => $bob);
+  $clearing.say;       # "Grassy Clearing (exits: 2, things: 0)"
+  $bob.container.say;  # "Oak Grove (exits: 1, things: 1)"
+
 =head1 DESCRIPTION
 
 C<RPG::Base> is a set of common base concepts and components on which more
