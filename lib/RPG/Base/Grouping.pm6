@@ -33,6 +33,10 @@ role RPG::Base::Grouping[::T] {
     method BUILD(SetHash(Any) :$!members) { }
 
 
+    # Coercers
+    method list() { $!members.keys.sort.cache }
+
+
     # Invariant checkers
     method !throw-unless-member($member) {
         X::RPG::Base::Grouping::NotMember.new(:$member, :grouping(self)).throw
