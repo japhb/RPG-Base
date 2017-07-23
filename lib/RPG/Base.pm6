@@ -1,5 +1,5 @@
 use v6.c;
-unit class RPG::Base:ver<0.0.3>;
+unit class RPG::Base:ver<0.0.4>;
 
 
 =begin pod
