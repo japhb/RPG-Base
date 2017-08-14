@@ -32,6 +32,15 @@ class X::RPG::Base::StatsBearer::StatComputed is Exception {
     }
 }
 
+class X::RPG::Base::StatsBearer::NotActive is Exception {
+    has RPG::Base::StatModifier $.modifier;
+    has RPG::Base::StatsBearer  $.bearer;
+
+    method message() {
+        "$.modifier.^name() '$.modifier' is not active for $.bearer.^name() '$.bearer'"
+    }
+}
+
 
 #| A thing that has measurable (and modifiable) stats
 role RPG::Base::StatsBearer {
@@ -61,6 +70,11 @@ role RPG::Base::StatsBearer {
             if %!stats{$stat} ~~ Code;
     }
 
+    method !throw-unless-modifier-active($modifier) {
+        X::RPG::Base::StatsBearer::NotActive.new(:$modifier, :bearer(self)).throw
+            unless $modifier ∈ @!modifiers;
+    }
+
 
     #| Stats recognized by all instances of this class (as stat-name => default pairs); override in subclasses
     method base-stats() {
@@ -84,10 +98,17 @@ role RPG::Base::StatsBearer {
     }
 
     #| Add modifier to modifier stack
-    method add-modifier(RPG::Base::StatModifier $modifier) {
+    method add-modifier(RPG::Base::StatModifier:D $modifier) {
         self!throw-if-stat-unknown($modifier.stat);
 
         @!modifiers.push($modifier);
+    }
+
+    #| Remove a modifier from the modifier stack
+    method remove-modifier(RPG::Base::StatModifier:D $modifier) {
+        self!throw-unless-modifier-active($modifier);
+
+        @!modifiers.splice(@!modifiers.first($modifier, :k), 1);
     }
 
     #| Apply modifiers to a given stat value; override in subclasses to e.g. redefine stacking behavior
