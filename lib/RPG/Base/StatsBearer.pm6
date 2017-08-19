@@ -14,6 +14,7 @@ class X::RPG::Base::StatsBearer::StatUnknown is Exception {
     }
 }
 
+# XXXX: Currently unused
 class X::RPG::Base::StatsBearer::StatUnset is Exception {
     has                        $.stat;
     has RPG::Base::StatsBearer $.bearer;
@@ -60,6 +61,7 @@ role RPG::Base::StatsBearer {
             unless %!stats{$stat}:exists;
     }
 
+    # XXXX: Currently unused
     method !throw-if-stat-unset($stat) {
         X::RPG::Base::StatsBearer::StatUnset.new(:$stat, :bearer(self)).throw
             unless %!stats{$stat}.defined;
@@ -76,12 +78,12 @@ role RPG::Base::StatsBearer {
     }
 
 
-    #| Stats recognized by all instances of this class (as stat-name => default pairs); override in subclasses
+    #| Stats recognized by all instances of this class (as stat-name => default pairs); override in classes
     method base-stats() {
         ()
     }
 
-    #| Stats computed in this class (as stat-name => code pairs); override in subclasses
+    #| Stats computed in this class (as stat-name => code pairs); override in classes
     method computed-stats() {
         ()
     }
