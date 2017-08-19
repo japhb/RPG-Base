@@ -7,7 +7,7 @@ plan 16;
 
 class Container does RPG::Base::ThingContainer { }
 
-# XXXX: Test .instantiate-contents()
+# Note: .instantiate-contents is tested via the Creature tests (08-creature.t)
 
 {
     my $pocket = Container.new;
