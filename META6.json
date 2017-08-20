@@ -24,8 +24,13 @@
     "RPG::Base::ThingContainer" : "lib/RPG/Base/ThingContainer.pm6"
   },
   "resources" : [ ],
-  "source-url" : "",
-  "tags" : [ ],
+  "source-url" : "git://github.com/japhb/RPG-Base.git",
+  "tags" : [
+    "RPG",
+    "Base",
+    "Adventure",
+    "Creature"
+  ],
   "test-depends" : [ ],
-  "version" : "0.0.6"
+  "version" : "0.0.7"
 }
