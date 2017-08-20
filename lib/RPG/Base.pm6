@@ -1,5 +1,5 @@
 use v6.c;
-unit class RPG::Base:ver<0.0.5>;
+unit class RPG::Base:ver<0.0.6>;
 
 
 =begin pod
@@ -55,6 +55,16 @@ subclasses can be named using that game's particular terminology).
 The entire point of C<RPG::Base> is to be subclassable, extensible, and
 generic.  If it turns out that one of the design choices is making that
 difficult, B<please let me know>.
+
+=head2 STABILITY
+
+C<RPG::Base> is not entirely stable, as befits the low version number (though
+already in use as the base of considerably more complete rulesystems).  A
+first approximation of stability can be seen by looking at the tests for each
+module.  Modules with lots of tests but specific C<XXXX> markers still have a
+few slushy behaviors and might change a bit; those with very few tests or even
+just a C<plan :skip-all> at the top of the test file represent conjectured
+designs and are probably very much still in flux.
 
 =head1 CONTRIBUTING
 

@@ -47,6 +47,11 @@ DESCRIPTION
 
 The entire point of `RPG::Base` is to be subclassable, extensible, and generic. If it turns out that one of the design choices is making that difficult, **please let me know**.
 
+STABILITY
+---------
+
+`RPG::Base` is not entirely stable, as befits the low version number (though already in use as the base of considerably more complete rulesystems). A first approximation of stability can be seen by looking at the tests for each module. Modules with lots of tests but specific `XXXX` markers still have a few slushy behaviors and might change a bit; those with very few tests or even just a `plan :skip-all` at the top of the test file represent conjectured designs and are probably very much still in flux.
+
 CONTRIBUTING
 ============
 
