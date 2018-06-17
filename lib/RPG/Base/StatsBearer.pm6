@@ -99,6 +99,11 @@ role RPG::Base::StatsBearer {
         %!stats{.key} = .value for @pairs;
     }
 
+    #| Find matching modifiers in the modifier stack
+    method modifiers-matching(Mu $matcher) {
+        my @ = @!modifiers.grep($matcher)
+    }
+
     #| Add modifier to modifier stack
     method add-modifier(RPG::Base::StatModifier:D $modifier) {
         self!throw-if-stat-unknown($modifier.stat);
