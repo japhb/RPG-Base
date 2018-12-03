@@ -1,4 +1,4 @@
-use v6.c;
+use v6.d;
 unit class RPG::Base:ver<0.0.7>;
 
 
