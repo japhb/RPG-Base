@@ -3,9 +3,9 @@ use RPG::Base::Container;
 use RPG::Base::Location;
 
 
-plan 47;
+plan 57;
 
-# XXXX: Need to test starting with pre-defined exits or contents
+# XXXX: Need to test starting with pre-defined contents
 # XXXX: Need to test setting invalid exits or contents
 
 {
@@ -125,5 +125,37 @@ plan 47;
     is $location.contents.elems, 1, "ending location has one thing";
     ok $container ∈ $location.contents, "correct thing in ending location";
 }
+
+{
+    # Pre-filled exits
+    my $airlock = RPG::Base::Location.new(:name('Airlock'));
+    my $engine  = RPG::Base::Location.new(:name('Engine Room'));
+    my RPG::Base::Location %exits = up => $airlock, down => $engine;
+    my $lab     = RPG::Base::Location.new(:name('Laboratory'), :%exits);
+
+    isa-ok $lab, RPG::Base::Location;
+    is $lab.name, 'Laboratory',
+        "named location with pre-filled exits remembers its name";
+    is $lab.desc, '',
+        "named location with pre-filled exits got empty description";
+    is $lab.contents.elems, 0,
+        "named location with pre-filled exits starts with no contents";
+    is $lab.exits   .elems, 2,
+        "named location with pre-filled exits has correct number of them";
+
+    ok $lab.exits<up>   === $airlock, "first exit is correct";
+    ok $lab.exits<down> === $engine, "second exit is correct";
+
+    my $habitat = RPG::Base::Location.new(:name('Habitat Ring'));
+    $lab.add-exit('outward' => $habitat);
+    is $lab.exits.elems, 3, "able to add exit to named location with pre-filled exits";
+    ok $lab.exits<outward> === $habitat, "third exit is correct";
+
+    my $suit = RPG::Base::Container.new(:name('Space Suit'));
+    my %escape = in => $suit,;
+    dies-ok { RPG::Base::Location.new(:exits(%escape)) },
+        "Cannot add a non-Location/Code exit even as a prefilled exit";
+}
+
 
 done-testing;
