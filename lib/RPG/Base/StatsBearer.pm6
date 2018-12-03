@@ -78,7 +78,7 @@ role RPG::Base::StatsBearer {
     }
 
 
-    #| Stats recognized by all instances of this class (as stat-name => default pairs); override in classes
+    #| Non-computed stats recognized by all instances of this class (as stat-name => default pairs); override in classes
     method base-stats() {
         ()
     }
