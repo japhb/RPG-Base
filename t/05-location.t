@@ -38,9 +38,9 @@ plan 44;
     # add-exit, longhand form
     my $l3 = RPG::Base::Location.new(:name('Earth'));
     $location.add-exit(:direction('inward'), :location($l3));
-    is $location.exits<inward>, $l3, "inward exit set";
+    ok $location.exits<inward> === $l3, "inward exit set";
     $l3.add-exit(:direction('outward'), :$location);
-    is $l3.exits<outward>, $location, "outward exit set";
+    ok $l3.exits<outward> === $location, "outward exit set";
 
     my $l2 = RPG::Base::Location.new(:name('Venus'));
     throws-like { $location.add-exit(:direction('inward'), :location($l2)) },
@@ -51,7 +51,7 @@ plan 44;
     # add-exit, shorthand form
     my $l5 = RPG::Base::Location.new(:name('Asteroid Belt'));
     $location.add-exit('outward' => $l5);
-    is $location.exits<outward>, $l5, "outward exit set";
+    ok $location.exits<outward> === $l5, "outward exit set";
 
     my $l6 = RPG::Base::Location.new(:name('Jupiter'));
     throws-like { $location.add-exit('outward' => $l6) },
