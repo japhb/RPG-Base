@@ -3,7 +3,7 @@ use RPG::Base::Container;
 use RPG::Base::Location;
 
 
-plan 44;
+plan 47;
 
 # XXXX: Need to test starting with pre-defined exits or contents
 # XXXX: Need to test setting invalid exits or contents
@@ -46,6 +46,10 @@ plan 44;
     throws-like { $location.add-exit(:direction('inward'), :location($l2)) },
                 X::RPG::Base::Location::ExitAlreadyExists;
 
+    my $ship = RPG::Base::Container.new(:name('Transport'));
+    dies-ok { $location.add-exit(:direction('off'), :location($ship)) },
+        "Can't set an exit to a non-Location/Code using long form";
+
     is $location.exits.elems, 1, "still only one exit set on original location";
 
     # add-exit, shorthand form
@@ -56,6 +60,9 @@ plan 44;
     my $l6 = RPG::Base::Location.new(:name('Jupiter'));
     throws-like { $location.add-exit('outward' => $l6) },
                 X::RPG::Base::Location::ExitAlreadyExists;
+
+    dies-ok { $location.add-exit('off' => $ship) },
+        "Can't set an exit to a non-Location/Code using short form";
 
     is $location.exits.elems, 2, "still only two exits set on original location";
 
@@ -71,6 +78,9 @@ plan 44;
 
     throws-like { $l2.add-thing($container) },
                 X::RPG::Base::ThingContainer::AlreadyHasContainer;
+
+    dies-ok { $location.add-thing('Simple string') },
+        "Can't add a non-Thing to a Location";
 
     # remove-thing
     my $c2 = RPG::Base::Container.new(:name('pouch'));
