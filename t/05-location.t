@@ -3,10 +3,9 @@ use RPG::Base::Container;
 use RPG::Base::Location;
 
 
-plan 57;
+plan 81;
 
-# XXXX: Need to test starting with pre-defined contents
-# XXXX: Need to test setting invalid exits or contents
+# XXXX: Need to test gist
 
 {
     # Anonymous location
@@ -155,6 +154,100 @@ plan 57;
     my %escape = in => $suit,;
     dies-ok { RPG::Base::Location.new(:exits(%escape)) },
         "Cannot add a non-Location/Code exit even as a prefilled exit";
+}
+
+{
+    # Pre-filled contents
+    my $cabinet = RPG::Base::Container.new(:name('Filing Cabinet'));
+    my $desk    = RPG::Base::Container.new(:name('Desk'));
+    my $lab     = RPG::Base::Location.new(:name('Laboratory'),
+                                          :contents($cabinet, $desk));
+
+    isa-ok $lab, RPG::Base::Location;
+    is $lab.name, 'Laboratory',
+        "named location with pre-filled contents remembers its name";
+    is $lab.desc, '',
+        "named location with pre-filled contents got empty description";
+    is $lab.exits   .elems, 0,
+        "named location with pre-filled contents starts with no exits";
+    is $lab.contents.elems, 2,
+        "named location with pre-filled contents has correct number of them";
+
+    ok $cabinet ∈ $lab.contents, "first item in contents";
+    ok $desk    ∈ $lab.contents, "second item in contents";
+
+    my $office = RPG::Base::Location.new(:name('New Office'));
+    $lab.add-exit('north' => $office);
+    is $lab.exits.elems, 1,
+        "able to add exit to named location with pre-filled contents";
+    ok $lab.exits<north> === $office, "exit is correct";
+
+    $lab.move-thing('north' => $desk);
+    is $lab.contents.elems, 1,
+        "able to move thing out of location with pre-filled contents";
+    is $office.contents.elems, 1,
+        "moved thing arrives at new location";
+    ok $office.contents[0] === $desk, "moved thing is correct";
+    ok $lab.contents[0] === $cabinet, "other thing remains in old location";
+
+    my $centrifuge = RPG::Base::Container.new(:name('Centrifuge'));
+    $lab.add-thing($centrifuge);
+    is $lab.contents.elems, 2,
+        "able to add thing to location with pre-filled contents";
+    ok $cabinet ∈ $lab.contents, "original item in contents";
+    ok $centrifuge ∈ $lab.contents, "new item in contents";
+}
+
+{
+    # Programmatic and blocked exits
+    my $near = RPG::Base::Location.new(:name('Near Bank'));
+    my $far  = RPG::Base::Location.new(:name('Far Bank'));
+    my $down = RPG::Base::Location.new(:name('Down River'));
+    my $raft = RPG::Base::Container.new(:name('Small Raft'));
+
+    enum RiverLevel < Low High Raging >;
+    my   RiverLevel $level = Low;
+
+    my sub exit-rule(:$location, :$direction, *%) {
+        given $level {
+            when Low    { $location === $near ?? $far !! $near  }
+            when High   { $down }
+            when Raging {
+                X::RPG::Base::Location::Blocked
+                    .new(:$direction, :$location,
+                         :block('the raging flood waters')).throw
+            }
+        }
+    }
+
+    # add-exit, programmatic longhand form
+    $near.add-exit(:direction('across'), :code(&exit-rule));
+    $near.add-thing($raft);
+    ok $near.exits<across> === &exit-rule, "set a programmatic exit longhand";
+
+    throws-like { $near.move-thing('upstream' => $raft) },
+        X::RPG::Base::Location::ExitDoesNotExist;
+
+    $near.move-thing('across' => $raft);
+    ok $raft.container === $far, "able to use programmatic exit";
+
+    # add-exit, programmatic shorthand form
+    $far.add-exit('back' => &exit-rule);
+    ok $far.exits<back> === &exit-rule, "able to use same code exit at two locations";
+    $far.move-thing('back' => $raft);
+    ok $raft.container === $near, "able to use location-dependent exit rule";
+
+    $level = High;
+    $near.move-thing('across' => $raft);
+    ok $raft.container === $down, "programmatic exit can depend on external state";
+
+    $down.add-exit('path' => $far);
+    $down.move-thing('path' => $raft);
+    ok $raft.container === $far, "returned to location with programmatic exit";
+
+    $level = Raging;
+    throws-like { $far.move-thing('back' => $raft) },
+        X::RPG::Base::Location::Blocked, "blocked exit throws ::Blocked";
 }
 
 
