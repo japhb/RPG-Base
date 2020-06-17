@@ -27,7 +27,7 @@ class X::RPG::Base::ThingContainer::AlreadyHasContainer is Exception {
     has RPG::Base::Thing $.thing;
 
     method message() {
-        "$.container.^name() '$.thing' is already in another container"
+        "$.thing.^name() '$.thing' is already in another container"
         ~ ", $.thing.container.^name() '$.thing.container()'"
     }
 }
