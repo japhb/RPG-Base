@@ -59,7 +59,7 @@ role RPG::Base::ThingContainer {
 
     #| Check if a thing is in this container, at any level of containment
     method contains(RPG::Base::Thing:D $thing) {
-        $thing.container === self && $thing ∈ @.contents
+        $thing ∈ @.contents
         || so @!contents.grep($?ROLE).first(*.contains($thing))
     }
 
