@@ -3,7 +3,7 @@ use RPG::Base::Thing;
 use RPG::Base::ThingContainer;
 
 
-plan 16;
+plan 21;
 
 class Container does RPG::Base::ThingContainer { }
 
@@ -24,7 +24,9 @@ class Container does RPG::Base::ThingContainer { }
 
     $pocket.add-thing($coin);
     ok $coin  ∈ $pocket.contents, 'can add thing to container';
+    ok $pocket.contains($coin),   '... and container knows that it contains it';
     ok $fluff ∉ $pocket.contents, 'adding one thing does not bring in another';
+    nok $pocket.contains($fluff), '... and container knows it does not contain that';
     is +$pocket.contents, 1, 'container contains one thing';
 
     throws-like { $pocket.remove-thing($fluff) },
@@ -39,9 +41,11 @@ class Container does RPG::Base::ThingContainer { }
     $pocket.remove-thing($coin);
     nok $coin.container, 'a removed thing forgets its old container';
     nok $pocket.contents, 'after thing removed, container is empty again';
+    nok $pocket.contains($coin), "... and container knows it doesn't contain removed thing";
 
     $jar.add-thing($coin);
     ok $coin.container === $jar, 'thing can be added to second container';
+    ok $jar.contains($coin),     '... which knows it now contains it';
 
     throws-like { $pocket.add-thing($coin) },
 	X::RPG::Base::ThingContainer::AlreadyHasContainer,
@@ -49,6 +53,7 @@ class Container does RPG::Base::ThingContainer { }
 
     $jar.add-thing($fluff);
     ok $fluff.container === $jar, 'can add second thing to container';
+    ok $jar.contains($fluff),     '... which knows it contains it';
     is +$jar.contents, 2, 'container now contains two items';
 
     $jar.remove-thing($fluff);
