@@ -3,6 +3,7 @@ use RPG::Base;
 use RPG::Base::Named;
 use RPG::Base::Thing;
 use RPG::Base::ThingContainer;
+use RPG::Base::SlottedContainer;
 use RPG::Base::Container;
 use RPG::Base::Location;
 use RPG::Base::StatModifier;
