@@ -43,12 +43,12 @@ role RPG::Base::ThingContainer {
     # Invariant checkers
     method !throw-if-thing-in-self($thing) {
         X::RPG::Base::ThingContainer::AlreadyContained.new(:$thing, :container(self)).throw
-            if $thing ∈ @!contents;
+            if self.contains($thing);
     }
 
     method !throw-unless-thing-in-self($thing) {
         X::RPG::Base::ThingContainer::NotContained.new(:$thing, :container(self)).throw
-            unless $thing ∈ @!contents;
+            unless self.contains($thing);
     }
 
     method !throw-if-thing-has-container($thing) {
@@ -56,6 +56,12 @@ role RPG::Base::ThingContainer {
             if $thing.container;
     }
 
+
+    #| Check if a thing is in this container, at any level of containment
+    method contains(RPG::Base::Thing:D $thing) {
+        $thing.container === self && $thing ∈ @.contents
+        || so @!contents.grep($?ROLE).first(*.contains($thing))
+    }
 
     #| Add a thing (that does not have a current container) to this container
     method add-thing(RPG::Base::Thing:D $thing) {
