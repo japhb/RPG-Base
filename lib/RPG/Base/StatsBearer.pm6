@@ -1,3 +1,4 @@
+use RPG::Base::Stat;
 use RPG::Base::StatModifier;
 
 
@@ -11,6 +12,15 @@ class X::RPG::Base::StatsBearer::StatUnknown is Exception {
 
     method message() {
         "Stat '$.stat' is unknown to $.bearer.^name() '$.bearer'"
+    }
+}
+
+class X::RPG::Base::StatsBearer::StatExists is Exception {
+    has                        $.stat;
+    has RPG::Base::StatsBearer $.bearer;
+
+    method message() {
+        "Stat '$.stat' already exists for $.bearer.^name() '$.bearer'"
     }
 }
 
@@ -46,19 +56,24 @@ class X::RPG::Base::StatsBearer::NotActive is Exception {
 #| A thing that has measurable (and modifiable) stats
 role RPG::Base::StatsBearer {
     has %!stats;
-    has %!stat-defaults;
     has @.modifiers;
 
 
     submethod BUILD() {
         self.add-known-stats(   self.base-stats    );
         self.add-computed-stats(self.computed-stats);
+        self.add-relative-stats(self.relative-stats);
     }
 
     # Invariant checkers
     method !throw-if-stat-unknown($stat) {
         X::RPG::Base::StatsBearer::StatUnknown.new(:$stat, :bearer(self)).throw
             unless %!stats{$stat}:exists;
+    }
+
+    method !throw-if-stat-exists($stat) {
+        X::RPG::Base::StatsBearer::StatExists.new(:$stat, :bearer(self)).throw
+            if %!stats{$stat}:exists;
     }
 
     # XXXX: Currently unused
@@ -69,7 +84,7 @@ role RPG::Base::StatsBearer {
 
     method !throw-if-stat-computed($stat) {
         X::RPG::Base::StatsBearer::StatComputed.new(:$stat, :bearer(self)).throw
-            if %!stats{$stat} ~~ Code;
+            if %!stats{$stat} ~~ RPG::Base::ComputedStat;
     }
 
     method !throw-unless-modifier-active($modifier) {
@@ -88,15 +103,44 @@ role RPG::Base::StatsBearer {
         ()
     }
 
+    #| Stats whose value is relative to another stat (as stat-name => base-name pairs); override in classes
+    method relative-stats() {
+        ()
+    }
+
     #| Add additional known stats
     method add-known-stats(@pairs) {
-        %!stats{.key}         = .value.WHAT for @pairs;
-        %!stat-defaults{.key} = .value      for @pairs;
+        for @pairs {
+            self!throw-if-stat-exists(.key);
+
+            my $type = .value.WHAT;
+            my $stat = RPG::Base::BasicStat[$type].new(:name(.key),
+                                                       :default(.value),
+                                                       :value($type));
+            %!stats{.key} = $stat;
+        }
     }
 
     #| Add additional computed stats
     method add-computed-stats(@pairs) {
-        %!stats{.key} = .value for @pairs;
+        for @pairs {
+            self!throw-if-stat-exists(.key);
+
+            my $stat = RPG::Base::ComputedStat.new(:name(.key), :code(.value));
+            %!stats{.key} = $stat;
+        }
+    }
+
+    #| Add additional relative stats
+    method add-relative-stats(@pairs) {
+        for @pairs {
+            self!throw-if-stat-exists(.key);
+            self!throw-if-stat-unknown(.value);
+
+            # XXXX: Autodetecting type when base value has not been set?
+            my $stat = RPG::Base::RelativeStat.new(:name(.key), :base(.value));
+            %!stats{.key} = $stat;
+        }
     }
 
     #| Find matching modifiers in the modifier stack
@@ -129,22 +173,21 @@ role RPG::Base::StatsBearer {
         self!throw-if-stat-unknown($stat);
         self!throw-if-stat-computed($stat);
 
-        %!stats{$stat} = $value;
+        %!stats{$stat}.set-value($value);
     }
 
     #| Set unset base stats to their defaults
     method set-stats-to-defaults() {
-        %!stats{$_} //= %!stat-defaults{$_} for %!stat-defaults.keys;
+        for %!stats.values.grep(RPG::Base::BasicStat) {
+            .set-to-default unless .value(self).defined;
+        }
     }
 
     #| Retrieve base (unmodified) value for a stat
     method base-stat($stat) {
         self!throw-if-stat-unknown($stat);
 
-        my $value = %!stats{$stat};
-        $value = $value(self) if $value ~~ Code;
-
-        $value;
+        %!stats{$stat}.value(self)
     }
 
     #| Calculate fully modified value for a stat
