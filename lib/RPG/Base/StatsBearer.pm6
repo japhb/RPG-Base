@@ -111,36 +111,39 @@ role RPG::Base::StatsBearer {
     #| Add additional known stats
     method add-known-stats(@pairs) {
         for @pairs {
-            self!throw-if-stat-exists(.key);
-
             my $type = .value.WHAT;
             my $stat = RPG::Base::BasicStat[$type].new(:name(.key),
                                                        :default(.value),
                                                        :value($type));
-            %!stats{.key} = $stat;
+            self.add-stat($stat);
         }
     }
 
     #| Add additional computed stats
     method add-computed-stats(@pairs) {
         for @pairs {
-            self!throw-if-stat-exists(.key);
-
             my $stat = RPG::Base::ComputedStat.new(:name(.key), :code(.value));
-            %!stats{.key} = $stat;
+            self.add-stat($stat);
         }
     }
 
     #| Add additional relative stats
     method add-relative-stats(@pairs) {
         for @pairs {
-            self!throw-if-stat-exists(.key);
             self!throw-if-stat-unknown(.value);
 
             # XXXX: Autodetecting type when base value has not been set?
             my $stat = RPG::Base::RelativeStat.new(:name(.key), :base(.value));
-            %!stats{.key} = $stat;
+            self.add-stat($stat);
         }
+    }
+
+    #| Add an RPG::Base::Stat instance directly
+    method add-stat(RPG::Base::Stat:D $stat) {
+        my $name = $stat.name;
+        self!throw-if-stat-exists($name);
+
+        %!stats{$name} = $stat;
     }
 
     #| Find matching modifiers in the modifier stack
