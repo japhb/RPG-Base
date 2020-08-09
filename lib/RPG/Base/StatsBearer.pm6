@@ -93,22 +93,27 @@ role RPG::Base::StatsBearer {
     }
 
 
-    #| Non-computed stats recognized by all instances of this class (as stat-name => default pairs); override in classes
+    #| Non-computed stats recognized by all instances of this class, by default
+    #| as stat-name => default pairs (see add-known-stats); override in classes
+    #| to supply starting stat definitions
     method base-stats() {
         ()
     }
 
-    #| Stats computed in this class (as stat-name => code pairs); override in classes
+    #| Stats computed in this class, by default as stat-name => code pairs (see
+    #| add-computed-stats); override in classes to supply starting stat definitions
     method computed-stats() {
         ()
     }
 
-    #| Stats whose value is relative to another stat (as stat-name => base-name pairs); override in classes
+    #| Stats whose value is relative to another stat, by default as
+    #| stat-name => base-name pairs (see add-relative-stats); override in classes
+    #| to supply starting stat definitions
     method relative-stats() {
         ()
     }
 
-    #| Add additional known stats
+    #| Add additional known stats, by default expecting stat-name => default pairs
     method add-known-stats(@pairs) {
         for @pairs {
             my $type = .value.WHAT;
@@ -119,7 +124,7 @@ role RPG::Base::StatsBearer {
         }
     }
 
-    #| Add additional computed stats
+    #| Add additional computed stats, by default expecting stat-name => code pairs
     method add-computed-stats(@pairs) {
         for @pairs {
             my $stat = RPG::Base::ComputedStat.new(:name(.key), :code(.value));
@@ -127,7 +132,7 @@ role RPG::Base::StatsBearer {
         }
     }
 
-    #| Add additional relative stats
+    #| Add additional relative stats, by default expecting stat-name => base-name pairs
     method add-relative-stats(@pairs) {
         for @pairs {
             self!throw-if-stat-unknown(.value);
