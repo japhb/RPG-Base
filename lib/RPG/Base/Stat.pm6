@@ -26,9 +26,9 @@ does RPG::Base::Stat {
     has T $.default;
     has T $.value;
 
-    method set-value(T $new)    { $!value = $new }
-    method set-to-default()     { $!value = $!default }
-    method value($stats-bearer) { $!value }
+    method set-value(T $new)     { $!value = $new }
+    method set-to-default()      { $!value = $!default }
+    method value($stats-bearer?) { $!value }
 }
 
 
