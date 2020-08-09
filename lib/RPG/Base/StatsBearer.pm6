@@ -60,9 +60,7 @@ role RPG::Base::StatsBearer {
 
 
     submethod BUILD() {
-        self.add-known-stats(   self.base-stats    );
-        self.add-computed-stats(self.computed-stats);
-        self.add-relative-stats(self.relative-stats);
+        self.add-all-stats;
     }
 
     # Invariant checkers
@@ -92,6 +90,16 @@ role RPG::Base::StatsBearer {
             unless $modifier ∈ @!modifiers;
     }
 
+
+    #| Add all predefined types of stats, called by submethod BUILD.  If not
+    #| overriden, default behavior is to use the {base,computed,relative}-stats
+    #| methods to feed stat definitons to the add-{known,computed,relative}-stats
+    #| methods, in that order.
+    method add-all-stats() {
+        self.add-known-stats(   self.base-stats    );
+        self.add-computed-stats(self.computed-stats);
+        self.add-relative-stats(self.relative-stats);
+    }
 
     #| Non-computed stats recognized by all instances of this class, by default
     #| as stat-name => default pairs (see add-known-stats); override in classes
