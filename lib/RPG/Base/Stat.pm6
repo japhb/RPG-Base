@@ -36,7 +36,7 @@ does RPG::Base::Stat {
 role RPG::Base::RelativeStat[::T = Int]
 does RPG::Base::Stat {
     has Str:D $.base  is required;
-    has T:D   $.delta = T.new;
+    has T     $.delta = T.new;
 
     # Invariant checkers
     method !throw-unless-base-defined($base, $value) {
