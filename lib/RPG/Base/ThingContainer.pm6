@@ -51,6 +51,11 @@ role RPG::Base::ThingContainer {
             unless self.contains($thing);
     }
 
+    method !throw-unless-thing-directly-in-self($thing) {
+        X::RPG::Base::ThingContainer::NotContained.new(:$thing, :container(self)).throw
+            unless $thing ∈ @.contents;
+    }
+
     method !throw-if-thing-has-container($thing) {
         X::RPG::Base::ThingContainer::AlreadyHasContainer.new(:$thing).throw
             if $thing.container;
@@ -74,7 +79,7 @@ role RPG::Base::ThingContainer {
 
     #| Remove a thing from this container
     method remove-thing(RPG::Base::Thing:D $thing) {
-        self!throw-unless-thing-in-self($thing);
+        self!throw-unless-thing-directly-in-self($thing);
 
         $thing.container = RPG::Base::ThingContainer;
         @!contents.splice(@!contents.first($thing, :k), 1);
