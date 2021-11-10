@@ -199,6 +199,18 @@ role RPG::Base::StatsBearer {
         }
     }
 
+    #| Retrieve all stat objects (presumably for iteration)
+    method stats() {
+        %!stats.values
+    }
+
+    #| Retrieve raw stat object by name
+    method raw-stat($name) {
+        self!throw-if-stat-unknown($name);
+
+        %!stats{$name}
+    }
+
     #| Retrieve base (unmodified) value for a stat
     method base-stat($stat) {
         self!throw-if-stat-unknown($stat);
