@@ -1,4 +1,3 @@
-use v6.d;
 unit class RPG::Base:ver<0.0.9>;
 
 
@@ -7,6 +6,7 @@ unit class RPG::Base:ver<0.0.9>;
 =head1 NAME
 
 C<RPG::Base> - Common base components for RPGs
+
 
 =head1 SYNOPSIS
 
@@ -44,6 +44,7 @@ C<RPG::Base> - Common base components for RPGs
   $clearing.say;       # "Grassy Clearing (exits: 2, things: 0)"
   $bob.container.say;  # "Oak Grove (exits: 1, things: 1)"
 
+
 =head1 DESCRIPTION
 
 C<RPG::Base> is a set of common base concepts and components on which more
@@ -56,6 +57,7 @@ The entire point of C<RPG::Base> is to be subclassable, extensible, and
 generic.  If it turns out that one of the design choices is making that
 difficult, B<please let me know>.
 
+
 =head2 STABILITY
 
 C<RPG::Base> is not entirely stable, as befits the low version number (though
@@ -65,6 +67,7 @@ module.  Modules with lots of tests but specific C<XXXX> markers still have a
 few slushy behaviors and might change a bit; those with very few tests or even
 just a C<plan :skip-all> at the top of the test file represent conjectured
 designs and are probably very much still in flux.
+
 
 =head1 CONTRIBUTING
 
@@ -82,26 +85,28 @@ and it's important that any such questions stay well away from C<RPG::Base>
 so that the "blast radius" of an IP disagreement won't include all modules
 depending on this one.
 
-Stylistically, I generally keep with Larry Wall's classic Perl formatting
-rules (4 space indents, uncuddled elses, opening brace on same line as the
-control structure it goes with, and so on).  I prefer to use the Unicode
-forms of operators such as C<»> and C<∈> rather than the pure ASCII forms.
-Due to quirks of my brain, I will tend to favor aligning similar parts of
-consecutive lines when I can get it.  This tends to manifest most often in
-variable and class attribute definitions, where I align the type names,
-attribute names, and default values in columns.  Finally, I treat overall
-readability as more important than strict adherence to 80 column width, which
-I see as a good default because it happens to be fairly readable and guides
-one towards limiting the complexity of each line, not a hard limit that should
-be enforced with an iron will.
+Stylistically, I generally keep with Larry Wall's classic formatting rules
+(4 space indents, uncuddled elses, opening brace on same line as the control
+structure it goes with, and so on).  I prefer to use the Unicode forms of
+operators such as C<»> and C<∈> rather than the pure ASCII forms.  Due to
+quirks of my brain, I will tend to favor aligning similar parts of consecutive
+lines when I can get it.  This tends to manifest most often in variable and
+class attribute definitions, where I align the type names, attribute names,
+and default values in columns.  Finally, I treat overall readability as more
+important than strict adherence to 80 column width, which I see as a good
+default because it happens to be fairly readable and guides one towards
+limiting the complexity of each line, not a hard limit that should be enforced
+with an iron will.
+
 
 =head1 AUTHOR
 
 Geoffrey Broadwell <gjb@sonic.net>
 
+
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2016-2018 Geoffrey Broadwell
+Copyright 2016-2021 Geoffrey Broadwell
 
 This library is free software; you can redistribute it and/or modify it under
 the Artistic License 2.0.
