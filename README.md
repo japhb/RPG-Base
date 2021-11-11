@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/japhb/RPG-Base.svg?branch=master)](https://travis-ci.org/japhb/RPG-Base)
+[![Actions Status](https://github.com/japhb/RPG-Base/workflows/test/badge.svg)](https://github.com/japhb/RPG-Base/actions)
 
 NAME
 ====
