@@ -1,0 +1,35 @@
+#!/usr/bin/env raku
+
+use RPG::Base::Container;
+use RPG::Base::Creature;
+use RPG::Base::Location;
+use RPG::Base::Thing;
+
+# Using the base classes directly
+my $bob      = RPG::Base::Creature.new(:name('Bob the Magnificent'));
+my $backpack = RPG::Base::Container.new(:name('Cloth Backpack'));
+my $flint    = RPG::Base::Thing.new(:name('Flint and Steel'));
+my $wand     = RPG::Base::Thing.new(:name('Ironwood Wand'));
+
+my $clearing = RPG::Base::Location.new(:name('Grassy Clearing'));
+my $grove    = RPG::Base::Location.new(:name('Oak Grove'));
+my $cliff    = RPG::Base::Location.new(:name('Sheer Cliff'));
+
+$backpack.add-thing($flint);
+$bob.add-thing($_) for $backpack, $wand;
+
+$grove   .add-exit('north' => $clearing);
+$cliff   .add-exit('down'  => $clearing);
+$clearing.add-exit('south' => $grove);
+$clearing.add-exit('up'    => $cliff);
+$clearing.add-thing($bob);
+
+$clearing.say;  # "Grassy Clearing (exits: 2, things: 1)"
+$bob.say;       # "Bob the Magnificent (RPG::Base::Creature in
+                #  RPG::Base::Location 'Grassy Clearing' carrying
+                #  Cloth Backpack (contents: Flint and Steel),
+                #  Ironwood Wand)"
+
+$clearing.move-thing('south' => $bob);
+$clearing.say;       # "Grassy Clearing (exits: 2, things: 0)"
+$bob.container.say;  # "Oak Grove (exits: 1, things: 1)"
