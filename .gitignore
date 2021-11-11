@@ -1,9 +1,18 @@
-*~
-/blib/
-/src/*.o
-/src/Makefile
-/.panda-work
-/resources/*.so
-/resources/*.dylib
+# Caches
 .precomp/
+node_modules/
+
+# Packages
+/sdist/
 /RPG-Base-*
+
+# Backup files
+*~
+
+# IDE files
+/.idea
+*.iml
+
+# Generated files
+/*.html
+/docs/*.html
