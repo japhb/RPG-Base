@@ -1,4 +1,4 @@
-unit class RPG::Base:ver<0.0.10>;
+unit class RPG::Base:ver<0.0.11>;
 
 
 =begin pod
