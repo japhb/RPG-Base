@@ -204,6 +204,11 @@ role RPG::Base::StatsBearer {
         %!stats.values
     }
 
+    #| Determine if stat is known
+    method has-stat($name) {
+        %!stats{$name}:exists
+    }
+
     #| Retrieve raw stat object by name
     method raw-stat($name) {
         self!throw-if-stat-unknown($name);

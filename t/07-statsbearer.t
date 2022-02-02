@@ -3,7 +3,7 @@ use RPG::Base::StatModifier;
 use RPG::Base::StatsBearer;
 
 
-plan 48;
+plan 52;
 
 
 class SolidCube does RPG::Base::StatsBearer {
@@ -15,6 +15,12 @@ class SolidCube does RPG::Base::StatsBearer {
 {
     my $water = SolidCube.new;
     does-ok $water, RPG::Base::StatsBearer;
+
+    for < length density mass > -> $name {
+        ok $water.has-stat($name), "SolidCube has $name stat";
+    }
+
+    nok $water.has-stat('color'), "SolidCube does NOT have color stat";
 
     # XXXX: Handling of computed stats and modified stats when base stat still undefined
     # XXXX: Do we want even these to throw?  Or to automatically set-stats-to-defaults?
